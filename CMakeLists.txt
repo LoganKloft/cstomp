@@ -18,3 +18,4 @@ target_include_directories(cstomp PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_subdirectory(example)
+add_subdirectory(test)

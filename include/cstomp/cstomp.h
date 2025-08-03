@@ -118,6 +118,12 @@ void cstomp_on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf)
 
     uv_handle_t *handle = (uv_handle_t *)client;
     cstomp_connection_t *connection = (cstomp_connection_t *)handle->data;
+
+    if (strncmp(buf->base, CSTOMP_COMMAND_CONNECTED, strlen(CSTOMP_COMMAND_CONNECTED)) == 0)
+    {
+        connection->on_connect(connection->on_connect_ctx);
+    }
+
     connection->on_read(connection->on_read_ctx, buf->base, nread);
 
     if (buf->base)
@@ -133,15 +139,13 @@ void cstomp_on_write(uv_write_t *req, int status)
         fprintf(stderr, "Write error %s\n", uv_strerror(status));
     }
 
-    cstomp_write_t *write_ctx = (cstomp_write_t *)req->handle->data;
+    cstomp_write_t *write_ctx = (cstomp_write_t *)req->data;
     cstomp_connection_t *connection = write_ctx->connection;
     connection->on_write(connection->on_write_ctx);
 
     free(write_ctx->frame);
-    free(req->handle->data);
+    free(write_ctx);
     free(req);
-
-    req->handle->data = NULL;
 }
 
 static inline cstomp_connection_t *cstomp_connection()
@@ -178,24 +182,15 @@ static inline cstomp_connection_t *cstomp_connection()
 static inline int cstomp_add_command(cstomp_frame_t *frame, const char *command)
 {
     char *command_start = frame->buffer;
-    char *command_terminator = "\\n";
-    char *header_terminator = "\\n";
+    char *command_terminator = "\n";
 
-    if (strcmp(command, CSTOMP_COMMAND_CONNECT) == 0 || strcmp(command, CSTOMP_COMMAND_CONNECTED))
-    { // CONNECT and CONNECTED frames don't escape newlines
-        command_terminator = "\n";
-        header_terminator = "\n";
-    }
-
-    strcpy_s(command_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(command_start - (char *)frame->buffer)), command);
+    strcpy_s(command_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (command_start - frame->buffer), command);
     command_start += strlen(command);
-    strcpy_s(command_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(command_start - (char *)frame->buffer)), command_terminator);
+    strcpy_s(command_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (command_start - frame->buffer), command_terminator);
     command_start += strlen(command_terminator);
-    strcpy_s(command_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(command_start - (char *)frame->buffer)), header_terminator);
-    command_start += strlen(header_terminator);
     command_start[0] = '\0';
     command_start += 1;
-    frame->frame_size = abs((int)(command_start - (char *)frame->buffer));
+    frame->frame_size = command_start - frame->buffer;
 
     return 0;
 }
@@ -210,17 +205,9 @@ static inline int cstomp_add_command(cstomp_frame_t *frame, const char *command)
 static inline int cstomp_add_header(cstomp_frame_t *frame, const char *key, const char *value)
 {
     char *command_start = frame->buffer;
-    char *key_value_delimiter = "\\c";
-    char *header_terminator = "\\n\\n";
-    char *header_block_terminator = "\\n";
-
-    // if command is CONNECT or CONNECTED then we don't escape '\n' and ':'
-    if (strncmp(command_start, CSTOMP_COMMAND_CONNECT, strlen(CSTOMP_COMMAND_CONNECT)) == 0 || strncmp(command_start, CSTOMP_COMMAND_CONNECTED, strlen(CSTOMP_COMMAND_CONNECTED)))
-    {
-        key_value_delimiter = ":";
-        header_terminator = "\n\n";
-        header_block_terminator = "\n";
-    }
+    char *key_value_delimiter = ":";
+    char *header_terminator = "\n\n";
+    char *header_block_terminator = "\n";
 
     char *header_start = frame->buffer + frame->frame_size - 1;
     int header_exists = 0;
@@ -234,17 +221,17 @@ static inline int cstomp_add_header(cstomp_frame_t *frame, const char *key, cons
         header_start -= strlen(header_block_terminator);
     }
 
-    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(header_start - frame->buffer)), key);
+    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (header_start - frame->buffer), key);
     header_start += strlen(key);
-    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(header_start - frame->buffer)), key_value_delimiter);
+    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (header_start - frame->buffer), key_value_delimiter);
     header_start += strlen(key_value_delimiter);
-    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(header_start - frame->buffer)), value);
+    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (header_start - frame->buffer), value);
     header_start += strlen(value);
-    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - abs((int)(header_start - frame->buffer)), header_terminator);
+    strcpy_s(header_start, CSTOMP_FRAME_BUFFER_MAX_SIZE - (header_start - frame->buffer), header_terminator);
     header_start += strlen(header_terminator);
     header_start[0] = '\0';
     header_start += 1;
-    frame->frame_size = abs((int)(header_start - frame->buffer));
+    frame->frame_size = header_start - frame->buffer;
 
     return 0;
 }
@@ -256,7 +243,7 @@ static inline int cstomp_add_body(cstomp_frame_t *frame, const char *body, size_
     body_start += body_size;
     body_start[0] = '\0';
     body_start += 1;
-    frame->frame_size = abs((int)(body_start - (char *)frame->buffer));
+    frame->frame_size = body_start - frame->buffer;
     return 0;
 }
 
@@ -267,6 +254,7 @@ static inline int cstomp_send_frame(cstomp_connection_t *connection, cstomp_fram
     write_ctx->connection = connection;
 
     uv_write_t *req = (uv_write_t *)calloc(sizeof(uv_write_t), 1);
+    req->data = write_ctx;
     uv_buf_t buf = uv_buf_init(write_ctx->frame->buffer, (unsigned int)write_ctx->frame->frame_size);
     uv_write(req, (uv_stream_t *)&connection->socket, &buf, 1, cstomp_on_write);
     return 0;
@@ -281,8 +269,6 @@ void cstomp_on_connect(uv_connect_t *req, int status)
     }
 
     cstomp_connection_t *connection = (cstomp_connection_t *)req->handle->data;
-    connection->on_connect(connection->on_connect_ctx);
-
     uv_read_start((uv_stream_t *)&connection->socket, cstomp_alloc_callback, cstomp_on_read);
 
     cstomp_frame_t *frame = (cstomp_frame_t *)calloc(sizeof(cstomp_frame_t), 1);
@@ -306,12 +292,14 @@ static inline int cstomp_connection_free(cstomp_connection_t *connection)
 static inline int cstomp_connect(cstomp_connection_t *connection, char *destination_ip, uint16_t destination_port, char *username, char *password)
 {
     strcpy_s(connection->host, CSTOMP_HOST_MAX_LENGTH, destination_ip);
-    connection->port = destination_port;
-    uv_ip4_addr(connection->host, connection->port, &connection->destination);
-    uv_tcp_connect(connection->connect, &connection->socket, (const struct sockaddr *)&connection->destination, cstomp_on_connect);
-
     strcpy_s(connection->username, CSTOMP_USERNAME_MAX_LENGTH, username);
     strcpy_s(connection->password, CSTOMP_PASSWORD_MAX_LENGTH, password);
+    connection->port = destination_port;
+
+    uv_ip4_addr(connection->host, connection->port, &connection->destination);
+    connection->socket.data = connection;
+
+    uv_tcp_connect(connection->connect, &connection->socket, (const struct sockaddr *)&connection->destination, cstomp_on_connect);
 
     uv_run(connection->loop, UV_RUN_DEFAULT);
     return 0;
@@ -323,7 +311,7 @@ static inline int cstomp_send(cstomp_connection_t *connection, const char *desti
     snprintf(message_size_string, CSTOMP_FRAME_BUFFER_MAX_SIZE, "%zu", message_size);
 
     cstomp_frame_t *frame = (cstomp_frame_t *)calloc(sizeof(cstomp_frame_t), 1);
-    cstomp_add_command(frame, CSTOMP_COMMAND_CONNECT);
+    cstomp_add_command(frame, CSTOMP_COMMAND_SEND);
     cstomp_add_header(frame, "destination", destination);
     cstomp_add_header(frame, "content-length", message_size_string);
     cstomp_add_body(frame, message, message_size);
