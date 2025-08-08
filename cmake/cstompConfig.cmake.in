@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(libuv CONFIG REQUIRED)
+find_dependency(unofficial-utf8proc CONFIG REQUIRED)
+
+include("${CMAKE_CURRENT_LIST_DIR}/cstompTargets.cmake")
+check_required_components(cstomp)

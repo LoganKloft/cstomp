@@ -58,34 +58,43 @@ void on_read(void *ctx, char *buffer, size_t nread)
 }
 
 // Write callback - called when our message has been sent
-void on_write(void *ctx)
+void on_write(void *ctx, char *buffer, size_t nwrote)
 {
     printf("Message sent successfully!\n");
 }
 
 int main(int argc, char **argv)
 {
-    char host[] = "127.0.0.1"; // Remove const for compatibility
-    uint16_t port = 61613;
+    const char *host = "127.0.0.1";
+    const uint16_t port = 61613;
 
-    char username[] = "admin"; // Remove const for compatibility
-    char password[] = "admin"; // Remove const for compatibility
+    const char *username = "admin";
+    const char *password = "admin";
 
     printf("Creating STOMP connection to %s:%d\n", host, port);
 
     cstomp_connection_t *connection = cstomp_connection();
     if (!connection)
     {
-        fprintf(stderr, "Failed to create connection\n");
+        printf("Failed to create connection\n");
         return 1;
     }
 
     g_connection = connection; // Store globally for callbacks
 
     // Set up callbacks BEFORE connecting
-    cstomp_set_connect_callback(connection, NULL, on_connect);
-    cstomp_set_read_callback(connection, NULL, on_read);
-    cstomp_set_write_callback(connection, NULL, on_write);
+    if (cstomp_set_connect_callback(connection, NULL, on_connect))
+    {
+        printf("Failed to set connect callback\n");
+    }
+    if (cstomp_set_read_callback(connection, NULL, on_read))
+    {
+        printf("Failed to set read callback\n");
+    }
+    if (cstomp_set_write_callback(connection, NULL, on_write))
+    {
+        printf("Failed to set write callback\n");
+    }
 
     printf("Connecting...\n");
 
