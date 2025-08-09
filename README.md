@@ -5,7 +5,7 @@ A lightweight C library for connecting to and communicating with STOMP message b
 ## Features
 
 - **Asynchronous I/O**: Built on libuv for high-performance, non-blocking operations
-- **STOMP 1.1 Protocol**: Full support for STOMP version 1.1 specification
+- **STOMP 1.1 Protocol**: Partial support for STOMP version 1.1 specification
 - **Connection Management**: Easy connection setup with authentication support
 - **Message Sending**: Send messages to queues and topics
 - **Callback System**: Flexible callback system for handling events
@@ -251,23 +251,23 @@ pip install breathe
    sphinx-quickstart
    ```
 
-Create `docs/api.rst`:
-```rst
-API Reference
-=============
-
-.. doxygenfile:: cstomp.h
+   Create `docs/api.rst`:
+   ```rst
+   API Reference
+   =============
+   
+   .. doxygenfile:: cstomp.h
    :project: cstomp
-```
-
-And include it in your `docs/index.rst`:
-```rst
-.. toctree::
+   ```
+   
+   And include it in your `docs/index.rst`:
+   ```rst
+   .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+   
    api
-```
+   ```
 
 3. **Configure Sphinx** by editing `docs/conf.py`:
    ```python
@@ -321,4 +321,4 @@ This library is designed to be lightweight and focused on core STOMP functionali
 
 ## License
 
-Please refer to the license information in the source file.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for the full license text.
