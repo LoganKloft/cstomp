@@ -1,3 +1,14 @@
+/**
+ * @file cstomp.h
+ * @brief STOMP (Simple Text Oriented Messaging Protocol) client library
+ * @author Logan Kloft
+ * @version 1.0
+ * @date 2025
+ *
+ * A lightweight C library for connecting to and communicating with STOMP message brokers.
+ * This library provides asynchronous I/O operations using libuv and supports STOMP protocol
+ * version 1.1 features including connect and send.
+ */
 #ifndef CSTOMP_LIBRARY
 #define CSTOMP_LIBRARY
 
@@ -8,75 +19,131 @@
 #include <utf8proc.h>
 #include <uv.h>
 
-#define CSTOMP_COMMAND_CONNECT "CONNECT"
-#define CSTOMP_COMMAND_CONNECTED "CONNECTED"
-#define CSTOMP_COMMAND_ERROR "ERROR"
-#define CSTOMP_COMMAND_SEND "SEND"
-#define CSTOMP_COMMAND_SUBSCRIBE "SUBSCRIBE"
-#define CSTOMP_COMMAND_UNSUBSCRIBE "UNSUBSCRIBE"
-#define CSTOMP_COMMAND_BEGIN "BEGIN"
-#define CSTOMP_COMMAND_COMMIT "COMMIT"
-#define CSTOMP_COMMAND_ABORT "ABORT"
-#define CSTOMP_COMMAND_ACK "ACK"
-#define CSTOMP_COMMAND_NACK "NACK"
-#define CSTOMP_COMMAND_DISCONNECT "DISCONNECT"
+/** @defgroup stomp_commands STOMP Protocol Commands
+ *  @brief Standard STOMP protocol command strings
+ *  @{
+ */
+#define CSTOMP_COMMAND_CONNECT "CONNECT"         /**< Client connection request command */
+#define CSTOMP_COMMAND_CONNECTED "CONNECTED"     /**< Server connection acknowledgment */
+#define CSTOMP_COMMAND_ERROR "ERROR"             /**< Server error response */
+#define CSTOMP_COMMAND_SEND "SEND"               /**< Send message to destination */
+#define CSTOMP_COMMAND_SUBSCRIBE "SUBSCRIBE"     /**< Subscribe to destination */
+#define CSTOMP_COMMAND_UNSUBSCRIBE "UNSUBSCRIBE" /**< Unsubscribe from destination */
+#define CSTOMP_COMMAND_BEGIN "BEGIN"             /**< Begin transaction */
+#define CSTOMP_COMMAND_COMMIT "COMMIT"           /**< Commit transaction */
+#define CSTOMP_COMMAND_ABORT "ABORT"             /**< Abort transaction */
+#define CSTOMP_COMMAND_ACK "ACK"                 /**< Acknowledge message */
+#define CSTOMP_COMMAND_NACK "NACK"               /**< Negative acknowledge message */
+#define CSTOMP_COMMAND_DISCONNECT "DISCONNECT"   /**< Disconnect from server */
+/** @} */
 
-#define CSTOMP_HOST_MAX_LENGTH 256
-#define CSTOMP_CONNECTION_VERSION "1.1"
-#define CSTOMP_CONNECTION_VERSION_MAX_LENGTH 128
-#define CSTOMP_USERNAME_MAX_LENGTH 128
-#define CSTOMP_PASSWORD_MAX_LENGTH 128
+/** @defgroup config_limits Configuration Limits and Constants
+ *  @brief Maximum sizes and protocol constants
+ *  @{
+ */
+#define CSTOMP_HOST_MAX_LENGTH 256               /**< Maximum hostname length */
+#define CSTOMP_CONNECTION_VERSION "1.1"          /**< Supported STOMP protocol version */
+#define CSTOMP_CONNECTION_VERSION_MAX_LENGTH 128 /**< Maximum version string length */
+#define CSTOMP_USERNAME_MAX_LENGTH 128           /**< Maximum username length */
+#define CSTOMP_PASSWORD_MAX_LENGTH 128           /**< Maximum password length */
+/** @} */
 
-#define CSTOMP_FRAME_TERMINATOR "\0"
-#define CSTOMP_HEADER_DELIMITER ":"
-#define CSTOMP_LINE_TERMINATOR "\n"
-#define CSTOMP_HEADER_BLOCK_TERMINATOR "\n\n"
+/** @defgroup protocol_delimiters STOMP Protocol Delimiters
+ *  @brief Special characters and strings used in STOMP protocol
+ *  @{
+ */
+#define CSTOMP_FRAME_TERMINATOR "\0"          /**< Null byte frame terminator */
+#define CSTOMP_HEADER_DELIMITER ":"           /**< Header key-value delimiter */
+#define CSTOMP_LINE_TERMINATOR "\n"           /**< Line terminator */
+#define CSTOMP_HEADER_BLOCK_TERMINATOR "\n\n" /**< Header block terminator */
+/** @} */
 
-#define CSTOMP_FRAME_BUFFER_MAX_SIZE 8192
+/** @defgroup buffer_limits Buffer Size Limits
+ *  @brief Maximum buffer sizes for frames and data
+ *  @{
+ */
+#define CSTOMP_FRAME_BUFFER_MAX_SIZE 8192 /**< Maximum STOMP frame size in bytes */
+/** @} */
 
+/**
+ * @brief Error codes returned by CSTOMP functions
+ *
+ * All CSTOMP functions return one of these error codes to indicate
+ * success or the type of failure that occurred.
+ */
 typedef enum
 {
-    CSTOMP_OK = 0,
-    CSTOMP_ERROR_NULL_POINTER = -1,
-    CSTOMP_ERROR_BUFFER_OVERFLOW = -2,
-    CSTOMP_ERROR_MEMORY_ALLOCATION = -3,
-    CSTOMP_ERROR_NETWORK = -4,
-    CSTOMP_ERROR_INVALID_FRAME = -5
+    CSTOMP_OK = 0,                       /**< Operation completed successfully */
+    CSTOMP_ERROR_NULL_POINTER = -1,      /**< Null pointer passed as argument */
+    CSTOMP_ERROR_BUFFER_OVERFLOW = -2,   /**< Buffer would overflow */
+    CSTOMP_ERROR_MEMORY_ALLOCATION = -3, /**< Memory allocation failed */
+    CSTOMP_ERROR_NETWORK = -4,           /**< Network operation failed */
+    CSTOMP_ERROR_INVALID_FRAME = -5      /**< Invalid STOMP frame format */
 } cstomp_error_t;
 
+/**
+ * @brief STOMP protocol frame structure
+ *
+ * Represents a complete STOMP frame including command, headers, and body.
+ * The frame is stored as a contiguous buffer with proper STOMP formatting.
+ */
 typedef struct
 {
-    char buffer[CSTOMP_FRAME_BUFFER_MAX_SIZE];
-    size_t frame_size;
+    char buffer[CSTOMP_FRAME_BUFFER_MAX_SIZE]; /**< Frame data buffer */
+    size_t frame_size;                         /**< Current size of frame data */
 } cstomp_frame_t;
 
+/**
+ * @brief STOMP connection context
+ *
+ * Contains all state and configuration needed for a STOMP connection,
+ * including network socket, authentication credentials, and callback handlers.
+ */
 typedef struct
 {
-    uv_tcp_t socket;
-    char host[CSTOMP_HOST_MAX_LENGTH];
-    char version[CSTOMP_CONNECTION_VERSION_MAX_LENGTH];
-    char username[CSTOMP_USERNAME_MAX_LENGTH];
-    char password[CSTOMP_PASSWORD_MAX_LENGTH];
-    uint16_t port;
-    struct sockaddr_in destination;
-    uv_loop_t *loop;
-    uv_connect_t *connect;
+    uv_tcp_t socket;                                    /**< TCP socket handle */
+    char host[CSTOMP_HOST_MAX_LENGTH];                  /**< Server hostname or IP */
+    char version[CSTOMP_CONNECTION_VERSION_MAX_LENGTH]; /**< STOMP protocol version */
+    char username[CSTOMP_USERNAME_MAX_LENGTH];          /**< Authentication username */
+    char password[CSTOMP_PASSWORD_MAX_LENGTH];          /**< Authentication password */
+    uint16_t port;                                      /**< Server port number */
+    struct sockaddr_in destination;                     /**< Server socket address */
+    uv_loop_t *loop;                                    /**< Event loop handle */
+    uv_connect_t *connect;                              /**< Connection request handle */
 
-    void (*on_connect)(void *ctx);
-    void *on_connect_ctx;
-    void (*on_read)(void *ctx, char *buffer, size_t nread);
-    void *on_read_ctx;
-    void (*on_write)(void *ctx, char *buffer, size_t nwrote);
-    void *on_write_ctx;
+    void (*on_connect)(void *ctx);                            /**< Connection established callback */
+    void *on_connect_ctx;                                     /**< Context for connection callback */
+    void (*on_read)(void *ctx, char *buffer, size_t nread);   /**< Data received callback */
+    void *on_read_ctx;                                        /**< Context for read callback */
+    void (*on_write)(void *ctx, char *buffer, size_t nwrote); /**< Data sent callback */
+    void *on_write_ctx;                                       /**< Context for write callback */
 } cstomp_connection_t;
 
-// context passed to cstomp_on_write
+/**
+ * @brief Context passed to write completion callback
+ *
+ * Contains references to the frame that was sent and the connection
+ * it was sent on, used by the write completion handler.
+ */
 typedef struct
 {
-    cstomp_frame_t *frame;
-    cstomp_connection_t *connection;
+    cstomp_frame_t *frame;           /**< Frame that was sent */
+    cstomp_connection_t *connection; /**< Connection frame was sent on */
 } cstomp_write_t;
 
+/**
+ * @brief Set connection established callback
+ *
+ * Registers a callback function to be called when the STOMP connection
+ * is successfully established and the server sends a CONNECTED frame.
+ *
+ * @param connection Pointer to connection structure
+ * @param ctx User context to pass to callback (can be NULL)
+ * @param on_connect Callback function to call on connection (required if ctx is not NULL)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note If ctx is provided, on_connect must also be provided
+ */
 static inline int cstomp_set_connect_callback(cstomp_connection_t *connection, void *ctx, void (*on_connect)(void *ctx))
 {
     if (!connection)
@@ -96,6 +163,19 @@ static inline int cstomp_set_connect_callback(cstomp_connection_t *connection, v
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Set data received callback
+ *
+ * Registers a callback function to be called whenever data is received
+ * from the STOMP server on this connection.
+ *
+ * @param connection Pointer to connection structure
+ * @param ctx User context to pass to callback (can be NULL)
+ * @param on_read Callback function to call when data is received (required if ctx is not NULL)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note If ctx is provided, on_read must also be provided
+ */
 static inline int cstomp_set_read_callback(cstomp_connection_t *connection, void *ctx, void (*on_read)(void *ctx, char *buffer, size_t nread))
 {
     if (!connection)
@@ -115,6 +195,19 @@ static inline int cstomp_set_read_callback(cstomp_connection_t *connection, void
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Set data sent callback
+ *
+ * Registers a callback function to be called when data has been successfully
+ * sent to the STOMP server.
+ *
+ * @param connection Pointer to connection structure
+ * @param ctx User context to pass to callback (can be NULL)
+ * @param on_write Callback function to call when data is sent (required if ctx is not NULL)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note If ctx is provided, on_write must also be provided
+ */
 static inline int cstomp_set_write_callback(cstomp_connection_t *connection, void *ctx, void (*on_write)(void *ctx, char *buffer, size_t nwrote))
 {
     if (!connection)
@@ -134,6 +227,19 @@ static inline int cstomp_set_write_callback(cstomp_connection_t *connection, voi
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Memory allocation callback for libuv
+ *
+ * This function is called by libuv when it needs to allocate a buffer
+ * for incoming data. It allocates the requested amount of memory and
+ * initializes it to zero.
+ *
+ * @param handle The handle that needs the buffer
+ * @param suggested_size Suggested buffer size from libuv
+ * @param buf Output buffer structure to fill
+ *
+ * @note This function prints an error message to stderr if allocation fails
+ */
 void cstomp_alloc_callback(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf)
 {
     buf->base = (char *)calloc(1, suggested_size);
@@ -149,6 +255,20 @@ void cstomp_alloc_callback(uv_handle_t *handle, size_t suggested_size, uv_buf_t 
     }
 }
 
+/**
+ * @brief Extract body from STOMP frame
+ *
+ * Parses a STOMP frame to locate and extract the message body portion.
+ * The body is the content that appears after the header block terminator
+ * and before the frame terminator.
+ *
+ * @param frame Pointer to frame structure to parse
+ * @param body Output pointer to body data (will point into frame buffer)
+ * @param body_size Output size of body data in bytes
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note The returned body pointer points directly into the frame buffer
+ */
 static inline int cstomp_get_body(cstomp_frame_t *frame, char **body, size_t *body_size)
 {
     if (!frame || !body || !body_size)
@@ -190,6 +310,19 @@ static inline int cstomp_get_body(cstomp_frame_t *frame, char **body, size_t *bo
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Callback for data received from server
+ *
+ * This function is called by libuv when data is received from the STOMP server.
+ * It handles connection acknowledgment detection and forwards data to user callbacks.
+ *
+ * @param client The stream that received data
+ * @param nread Number of bytes read (negative on error)
+ * @param buf Buffer containing received data
+ *
+ * @note This function automatically detects CONNECTED frames and triggers connection callbacks
+ * @note Buffer memory is automatically freed after processing
+ */
 void cstomp_on_read(uv_stream_t *client, ssize_t nread, const uv_buf_t *buf)
 {
     if (!client)
@@ -230,6 +363,19 @@ cstomp_on_read_cleanup:
     }
 }
 
+/**
+ * @brief Callback for data sent to server
+ *
+ * This function is called by libuv when a write operation completes.
+ * It extracts the message body and forwards it to user write callbacks,
+ * then cleans up allocated resources.
+ *
+ * @param req The write request that completed
+ * @param status Write operation status (0 on success, negative on error)
+ *
+ * @note This function automatically frees frame and request memory
+ * @note Error messages are printed to stderr on write failures
+ */
 void cstomp_on_write(uv_write_t *req, int status)
 {
     if (!req)
@@ -277,6 +423,17 @@ cstomp_on_write_cleanup:
     free(req);
 }
 
+/**
+ * @brief Create a new STOMP connection
+ *
+ * Allocates and initializes a new STOMP connection structure with default values.
+ * Sets up the libuv event loop and TCP socket for network operations.
+ *
+ * @return Pointer to new connection structure, or NULL on allocation failure
+ *
+ * @note The returned connection must be freed with cstomp_connection_free()
+ * @note The connection is not yet connected to a server
+ */
 static inline cstomp_connection_t *cstomp_connection()
 {
     cstomp_connection_t *connection = (cstomp_connection_t *)calloc(1, sizeof(cstomp_connection_t));
@@ -323,6 +480,19 @@ static inline cstomp_connection_t *cstomp_connection()
     return connection;
 }
 
+/**
+ * @brief Add command to STOMP frame
+ *
+ * Adds a STOMP protocol command to the beginning of a frame buffer.
+ * This must be the first operation when building a new frame.
+ *
+ * @param frame Pointer to frame structure to modify
+ * @param command STOMP command string (e.g., "CONNECT", "SEND")
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @pre Frame buffer must be empty or this will overwrite existing content
+ * @post Frame will contain command followed by line terminator and frame terminator
+ */
 static inline int cstomp_add_command(cstomp_frame_t *frame, const char *command)
 {
     if (!frame || !command)
@@ -351,13 +521,22 @@ static inline int cstomp_add_command(cstomp_frame_t *frame, const char *command)
     return CSTOMP_OK;
 }
 
-// Precondition: a command must be present
-// Precondition: 0 or more headers may be present
-// Precondition: an empty body must be present
-// Postcondition: original command remains unedited
-// Postcondition: original headers remain unedited
-// Postcondition: new header added
-// Postcondition: empty body at end of frame
+/**
+ * @brief Add header to STOMP frame
+ *
+ * Adds a key-value header pair to a STOMP frame. Headers must be added
+ * after the command and before the body.
+ *
+ * @param frame Pointer to frame structure to modify
+ * @param key Header key name (must not be empty)
+ * @param value Header value (must not be empty)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @pre A command must already be present in the frame
+ * @pre Frame must have an empty body (will be preserved)
+ * @post New header will be added while preserving existing headers and command
+ * @post Empty body will remain at the end of the frame
+ */
 static inline int cstomp_add_header(cstomp_frame_t *frame, const char *key, const char *value)
 {
     if (!frame || !key || !value)
@@ -404,6 +583,20 @@ static inline int cstomp_add_header(cstomp_frame_t *frame, const char *key, cons
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Add body to STOMP frame
+ *
+ * Adds message body content to a STOMP frame. This should be the final
+ * step when building a frame, after command and headers are added.
+ *
+ * @param frame Pointer to frame structure to modify
+ * @param body Pointer to body data
+ * @param body_size Size of body data in bytes
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note Body data can contain binary content. If body data contains null bytes, then a content-length header should be added before the body.
+ * @note The frame terminator will be added after the body content
+ */
 static inline int cstomp_add_body(cstomp_frame_t *frame, const char *body, size_t body_size)
 {
     if (!frame || !body)
@@ -425,6 +618,20 @@ static inline int cstomp_add_body(cstomp_frame_t *frame, const char *body, size_
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Send STOMP frame to server
+ *
+ * Transmits a complete STOMP frame to the connected server. The frame
+ * must be properly formatted with command, headers, and body.
+ *
+ * @param connection Pointer to active connection
+ * @param frame Pointer to frame to send (will be freed after sending)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note The frame pointer will be freed automatically after sending
+ * @note Connection must be established before calling this function
+ * @note This function is asynchronous; use write callbacks to detect completion
+ */
 static inline int cstomp_send_frame(cstomp_connection_t *connection, cstomp_frame_t *frame)
 {
     if (!connection || !frame)
@@ -477,6 +684,19 @@ static inline int cstomp_send_frame(cstomp_connection_t *connection, cstomp_fram
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Callback for connection establishment
+ *
+ * This function is called by libuv when the TCP connection to the STOMP
+ * server is established. It starts reading from the socket and sends
+ * the initial CONNECT frame with authentication credentials.
+ *
+ * @param req The connection request that completed
+ * @param status Connection status (0 on success, negative on error)
+ *
+ * @note This function automatically sends a CONNECT frame with stored credentials
+ * @note Error messages are printed to stderr on connection failures
+ */
 void cstomp_on_connect(uv_connect_t *req, int status)
 {
     if (!req || status < 0)
@@ -502,6 +722,18 @@ void cstomp_on_connect(uv_connect_t *req, int status)
     cstomp_send_frame(connection, frame);
 }
 
+/**
+ * @brief Free STOMP connection resources
+ *
+ * Properly cleans up and frees all resources associated with a STOMP connection,
+ * including the event loop, socket handles, and connection structure itself.
+ *
+ * @param connection Pointer to connection to free (can be NULL)
+ * @return CSTOMP_OK always
+ *
+ * @note This function is safe to call with NULL pointer
+ * @note Connection should be disconnected before calling this function
+ */
 static inline int cstomp_connection_free(cstomp_connection_t *connection)
 {
     if (!connection)
@@ -516,6 +748,24 @@ static inline int cstomp_connection_free(cstomp_connection_t *connection)
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Connect to STOMP server
+ *
+ * Establishes a TCP connection to the specified STOMP server and begins
+ * the STOMP protocol handshake. This function starts the event loop and
+ * will block until the connection is closed.
+ *
+ * @param connection Pointer to initialized connection structure
+ * @param destination_ip Server IP address or hostname
+ * @param destination_port Server port number
+ * @param username Authentication username (can be NULL for anonymous)
+ * @param password Authentication password (can be NULL for anonymous)
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note Both username and password must be provided together or both must be NULL
+ * @note This function blocks until the connection is closed
+ * @note Connection callbacks will be triggered during execution
+ */
 static inline int cstomp_connect(cstomp_connection_t *connection, const char *destination_ip, const uint16_t destination_port, const char *username, const char *password)
 {
     if (!connection || !destination_ip)
@@ -542,6 +792,22 @@ static inline int cstomp_connect(cstomp_connection_t *connection, const char *de
     return CSTOMP_OK;
 }
 
+/**
+ * @brief Send message to destination
+ *
+ * Sends a message to the specified destination on the STOMP server.
+ * The message will be delivered to any subscribers of that destination.
+ *
+ * @param connection Pointer to active connection
+ * @param destination Destination name (e.g., "/queue/test", "/topic/news")
+ * @param message Pointer to message content
+ * @param message_size Size of message content in bytes
+ * @return CSTOMP_OK on success, error code on failure
+ *
+ * @note Connection must be established before sending messages
+ * @note Message content can include binary data and null bytes
+ * @note Content-length header will be automatically added
+ */
 static inline int cstomp_send(cstomp_connection_t *connection, const char *destination, const char *message, size_t message_size)
 {
     if (!connection || !destination || !message)

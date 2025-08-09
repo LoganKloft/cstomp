@@ -25,7 +25,6 @@ elseif(UNIX AND NOT APPLE)
 endif()
 
 find_package(libuv CONFIG REQUIRED)
-find_package(unofficial-utf8proc CONFIG REQUIRED)
 
 add_library(cstomp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/cstomp.c)
@@ -35,8 +34,7 @@ set_target_properties(cstomp PROPERTIES
     POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(cstomp PUBLIC
-    libuv::uv
-    utf8proc)
+    libuv::uv)
 
 # Platform-specific linking
 if(UNIX AND NOT APPLE)

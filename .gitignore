@@ -88,5 +88,18 @@ CMakeUserPresets.json
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #cmake-build-*
 
+# Build folder
 build
+
+# Doxygen
+latex
+doxygen
+
+# Visual Studio Code
 .vscode
+
+# Sphinx
+!docs/Makefile
+!docs/make.bat
+_static
+_templates
