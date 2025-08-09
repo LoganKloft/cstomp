@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API Reference &#8212; cstomp 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="cstomp documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<p>STOMP (Simple Text Oriented Messaging Protocol) client library. </p>
+<p>
+A lightweight C library for connecting to and communicating with STOMP message brokers. This library provides asynchronous I/O operations using libuv and supports STOMP protocol version 1.1 features including connect and send. <dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>Logan Kloft </p>
+</dd>
+<dt><strong>Version</strong></dt><dd><p>1.0 </p>
+</dd>
+<dt><strong>Date</strong></dt><dd><p>2025</p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv414cstomp_error_t">
+<span id="_CPPv314cstomp_error_t"></span><span id="_CPPv214cstomp_error_t"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_error_t</span></span></span><a class="headerlink" href="#_CPPv414cstomp_error_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Error codes returned by CSTOMP functions. </p>
+<p>All CSTOMP functions return one of these error codes to indicate success or the type of failure that occurred. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t9CSTOMP_OKE">
+<span id="_CPPv3N14cstomp_error_t9CSTOMP_OKE"></span><span id="_CPPv2N14cstomp_error_t9CSTOMP_OKE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca26366d781345571bb83910e8e3c755f6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_OK</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t9CSTOMP_OKE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Operation completed successfully </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t25CSTOMP_ERROR_NULL_POINTERE">
+<span id="_CPPv3N14cstomp_error_t25CSTOMP_ERROR_NULL_POINTERE"></span><span id="_CPPv2N14cstomp_error_t25CSTOMP_ERROR_NULL_POINTERE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca20132c44847f2f0c1e75ba9f54f4ea1f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_ERROR_NULL_POINTER</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t25CSTOMP_ERROR_NULL_POINTERE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Null pointer passed as argument </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t28CSTOMP_ERROR_BUFFER_OVERFLOWE">
+<span id="_CPPv3N14cstomp_error_t28CSTOMP_ERROR_BUFFER_OVERFLOWE"></span><span id="_CPPv2N14cstomp_error_t28CSTOMP_ERROR_BUFFER_OVERFLOWE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca5f52ce07ed0ed952f41379936dcf0526"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_ERROR_BUFFER_OVERFLOW</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t28CSTOMP_ERROR_BUFFER_OVERFLOWE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Buffer would overflow </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t30CSTOMP_ERROR_MEMORY_ALLOCATIONE">
+<span id="_CPPv3N14cstomp_error_t30CSTOMP_ERROR_MEMORY_ALLOCATIONE"></span><span id="_CPPv2N14cstomp_error_t30CSTOMP_ERROR_MEMORY_ALLOCATIONE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca4da30c652bf9fcdb74fdb10b9175e153"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_ERROR_MEMORY_ALLOCATION</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t30CSTOMP_ERROR_MEMORY_ALLOCATIONE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Memory allocation failed </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t20CSTOMP_ERROR_NETWORKE">
+<span id="_CPPv3N14cstomp_error_t20CSTOMP_ERROR_NETWORKE"></span><span id="_CPPv2N14cstomp_error_t20CSTOMP_ERROR_NETWORKE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca8b5cf93246564f1c2c8a5e36e830f405"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_ERROR_NETWORK</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t20CSTOMP_ERROR_NETWORKE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Network operation failed </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_error_t26CSTOMP_ERROR_INVALID_FRAMEE">
+<span id="_CPPv3N14cstomp_error_t26CSTOMP_ERROR_INVALID_FRAMEE"></span><span id="_CPPv2N14cstomp_error_t26CSTOMP_ERROR_INVALID_FRAMEE"></span><span class="target" id="cstomp_8h_1a89639fbc385332f7f65fbda0bd91cd2ca7b0d75d0eb6b3d5a43bffe0bf6dd7f50"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSTOMP_ERROR_INVALID_FRAME</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_error_t26CSTOMP_ERROR_INVALID_FRAMEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Invalid STOMP frame format </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv427cstomp_set_connect_callbackP19cstomp_connection_tPvPFvPvE">
+<span id="_CPPv327cstomp_set_connect_callbackP19cstomp_connection_tPvPFvPvE"></span><span id="_CPPv227cstomp_set_connect_callbackP19cstomp_connection_tPvPFvPvE"></span><span class="target" id="cstomp_8h_1aba145567ecc5975463c2eb71be45205d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_set_connect_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">on_connect</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv427cstomp_set_connect_callbackP19cstomp_connection_tPvPFvPvE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Set connection established callback. </p>
+<p>Registers a callback function to be called when the STOMP connection is successfully established and the server sends a CONNECTED frame.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If ctx is provided, on_connect must also be provided </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to connection structure </p></li>
+<li><p><strong>ctx</strong> – User context to pass to callback (can be NULL) </p></li>
+<li><p><strong>on_connect</strong> – Callback function to call on connection (required if ctx is not NULL) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv424cstomp_set_read_callbackP19cstomp_connection_tPvPFvPvPc6size_tE">
+<span id="_CPPv324cstomp_set_read_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"></span><span id="_CPPv224cstomp_set_read_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"></span><span class="target" id="cstomp_8h_1aecd7210b62939089907308628387595f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_set_read_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">on_read</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nread</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv424cstomp_set_read_callbackP19cstomp_connection_tPvPFvPvPc6size_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Set data received callback. </p>
+<p>Registers a callback function to be called whenever data is received from the STOMP server on this connection.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If ctx is provided, on_read must also be provided </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to connection structure </p></li>
+<li><p><strong>ctx</strong> – User context to pass to callback (can be NULL) </p></li>
+<li><p><strong>on_read</strong> – Callback function to call when data is received (required if ctx is not NULL) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv425cstomp_set_write_callbackP19cstomp_connection_tPvPFvPvPc6size_tE">
+<span id="_CPPv325cstomp_set_write_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"></span><span id="_CPPv225cstomp_set_write_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"></span><span class="target" id="cstomp_8h_1ab1afb4646c5c5bf4c4629197ac36056c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_set_write_callback</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ctx</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">on_write</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nwrote</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv425cstomp_set_write_callbackP19cstomp_connection_tPvPFvPvPc6size_tE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Set data sent callback. </p>
+<p>Registers a callback function to be called when data has been successfully sent to the STOMP server.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If ctx is provided, on_write must also be provided </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to connection structure </p></li>
+<li><p><strong>ctx</strong> – User context to pass to callback (can be NULL) </p></li>
+<li><p><strong>on_write</strong> – Callback function to call when data is sent (required if ctx is not NULL) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv421cstomp_alloc_callbackP11uv_handle_t6size_tP8uv_buf_t">
+<span id="_CPPv321cstomp_alloc_callbackP11uv_handle_t6size_tP8uv_buf_t"></span><span id="_CPPv221cstomp_alloc_callbackP11uv_handle_t6size_tP8uv_buf_t"></span><span id="cstomp_alloc_callback__uv_handle_tP.s.uv_buf_tP"></span><span class="target" id="cstomp_8h_1a9e7cdfc4a9c7fa4607d6cd200b7dcd21"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_alloc_callback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uv_handle_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">handle</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">suggested_size</span></span>, <span class="n"><span class="pre">uv_buf_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv421cstomp_alloc_callbackP11uv_handle_t6size_tP8uv_buf_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Memory allocation callback for libuv. </p>
+<p>This function is called by libuv when it needs to allocate a buffer for incoming data. It allocates the requested amount of memory and initializes it to zero.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function prints an error message to stderr if allocation fails </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handle</strong> – The handle that needs the buffer </p></li>
+<li><p><strong>suggested_size</strong> – Suggested buffer size from libuv </p></li>
+<li><p><strong>buf</strong> – Output buffer structure to fill</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415cstomp_get_bodyP14cstomp_frame_tPPcP6size_t">
+<span id="_CPPv315cstomp_get_bodyP14cstomp_frame_tPPcP6size_t"></span><span id="_CPPv215cstomp_get_bodyP14cstomp_frame_tPPcP6size_t"></span><span id="cstomp_get_body__cstomp_frame_tP.cPP.sP"></span><span class="target" id="cstomp_8h_1ae408190b42dca1da555ba65d5339bb78"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_get_body</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">body</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">body_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415cstomp_get_bodyP14cstomp_frame_tPPcP6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Extract body from STOMP frame. </p>
+<p>Parses a STOMP frame to locate and extract the message body portion. The body is the content that appears after the header block terminator and before the frame terminator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The returned body pointer points directly into the frame buffer </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – Pointer to frame structure to parse </p></li>
+<li><p><strong>body</strong> – Output pointer to body data (will point into frame buffer) </p></li>
+<li><p><strong>body_size</strong> – Output size of body data in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414cstomp_on_readP11uv_stream_t7ssize_tPK8uv_buf_t">
+<span id="_CPPv314cstomp_on_readP11uv_stream_t7ssize_tPK8uv_buf_t"></span><span id="_CPPv214cstomp_on_readP11uv_stream_t7ssize_tPK8uv_buf_t"></span><span id="cstomp_on_read__uv_stream_tP.ssize_t.uv_buf_tCP"></span><span class="target" id="cstomp_8h_1a01c7bf72336a7956268628d8c7a3dba3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_on_read</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uv_stream_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">client</span></span>, <span class="n"><span class="pre">ssize_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nread</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uv_buf_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414cstomp_on_readP11uv_stream_t7ssize_tPK8uv_buf_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Callback for data received from server. </p>
+<p>This function is called by libuv when data is received from the STOMP server. It handles connection acknowledgment detection and forwards data to user callbacks.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function automatically detects CONNECTED frames and triggers connection callbacks </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Buffer memory is automatically freed after processing </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – The stream that received data </p></li>
+<li><p><strong>nread</strong> – Number of bytes read (negative on error) </p></li>
+<li><p><strong>buf</strong> – Buffer containing received data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415cstomp_on_writeP10uv_write_ti">
+<span id="_CPPv315cstomp_on_writeP10uv_write_ti"></span><span id="_CPPv215cstomp_on_writeP10uv_write_ti"></span><span id="cstomp_on_write__uv_write_tP.i"></span><span class="target" id="cstomp_8h_1a394fd34a503824b270cbd89d258ceeec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_on_write</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uv_write_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">req</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415cstomp_on_writeP10uv_write_ti" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Callback for data sent to server. </p>
+<p>This function is called by libuv when a write operation completes. It extracts the message body and forwards it to user write callbacks, then cleans up allocated resources.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function automatically frees frame and request memory </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Error messages are printed to stderr on write failures </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>req</strong> – The write request that completed </p></li>
+<li><p><strong>status</strong> – Write operation status (0 on success, negative on error)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417cstomp_connectionv">
+<span id="_CPPv317cstomp_connectionv"></span><span id="_CPPv217cstomp_connectionv"></span><span id="cstomp_connection"></span><span class="target" id="cstomp_8h_1ad91ee60bade6e50c6ab3903f98ff8f28"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_connection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417cstomp_connectionv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Create a new STOMP connection. </p>
+<p>Allocates and initializes a new STOMP connection structure with default values. Sets up the libuv event loop and TCP socket for network operations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The returned connection must be freed with cstomp_connection_free() </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The connection is not yet connected to a server </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to new connection structure, or NULL on allocation failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv418cstomp_add_commandP14cstomp_frame_tPKc">
+<span id="_CPPv318cstomp_add_commandP14cstomp_frame_tPKc"></span><span id="_CPPv218cstomp_add_commandP14cstomp_frame_tPKc"></span><span id="cstomp_add_command__cstomp_frame_tP.cCP"></span><span class="target" id="cstomp_8h_1a5b48e2d453bee56af5738b7a2711eefa"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_add_command</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">command</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418cstomp_add_commandP14cstomp_frame_tPKc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Add command to STOMP frame. </p>
+<p>Adds a STOMP protocol command to the beginning of a frame buffer. This must be the first operation when building a new frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – Pointer to frame structure to modify </p></li>
+<li><p><strong>command</strong> – STOMP command string (e.g., “CONNECT”, “SEND”) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+<dt class="field-odd">Pre<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Frame buffer must be empty or this will overwrite existing content </p>
+</dd>
+<dt class="field-even">Post<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frame will contain command followed by line terminator and frame terminator </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417cstomp_add_headerP14cstomp_frame_tPKcPKc">
+<span id="_CPPv317cstomp_add_headerP14cstomp_frame_tPKcPKc"></span><span id="_CPPv217cstomp_add_headerP14cstomp_frame_tPKcPKc"></span><span id="cstomp_add_header__cstomp_frame_tP.cCP.cCP"></span><span class="target" id="cstomp_8h_1a5142cb7552f6eb2282b3d30559a8ab46"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_add_header</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">key</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417cstomp_add_headerP14cstomp_frame_tPKcPKc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Add header to STOMP frame. </p>
+<p>Adds a key-value header pair to a STOMP frame. Headers must be added after the command and before the body.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – Pointer to frame structure to modify </p></li>
+<li><p><strong>key</strong> – Header key name (must not be empty) </p></li>
+<li><p><strong>value</strong> – Header value (must not be empty) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+<dt class="field-odd">Pre<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A command must already be present in the frame </p>
+</dd>
+<dt class="field-even">Pre<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frame must have an empty body (will be preserved) </p>
+</dd>
+<dt class="field-odd">Post<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New header will be added while preserving existing headers and command </p>
+</dd>
+<dt class="field-even">Post<span class="colon">:</span></dt>
+<dd class="field-even"><p>Empty body will remain at the end of the frame </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv415cstomp_add_bodyP14cstomp_frame_tPKc6size_t">
+<span id="_CPPv315cstomp_add_bodyP14cstomp_frame_tPKc6size_t"></span><span id="_CPPv215cstomp_add_bodyP14cstomp_frame_tPKc6size_t"></span><span id="cstomp_add_body__cstomp_frame_tP.cCP.s"></span><span class="target" id="cstomp_8h_1ac7fd1fafe95356812f6f5349b1cfc962"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_add_body</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">body</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">body_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv415cstomp_add_bodyP14cstomp_frame_tPKc6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Add body to STOMP frame. </p>
+<p>Adds message body content to a STOMP frame. This should be the final step when building a frame, after command and headers are added.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Body data can contain binary content. If body data contains null bytes, then a content-length header should be added before the body. </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The frame terminator will be added after the body content </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – Pointer to frame structure to modify </p></li>
+<li><p><strong>body</strong> – Pointer to body data </p></li>
+<li><p><strong>body_size</strong> – Size of body data in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417cstomp_send_frameP19cstomp_connection_tP14cstomp_frame_t">
+<span id="_CPPv317cstomp_send_frameP19cstomp_connection_tP14cstomp_frame_t"></span><span id="_CPPv217cstomp_send_frameP19cstomp_connection_tP14cstomp_frame_t"></span><span id="cstomp_send_frame__cstomp_connection_tP.cstomp_frame_tP"></span><span class="target" id="cstomp_8h_1ab16f433b1ace185f833d84378aa47191"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_send_frame</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">frame</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417cstomp_send_frameP19cstomp_connection_tP14cstomp_frame_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Send STOMP frame to server. </p>
+<p>Transmits a complete STOMP frame to the connected server. The frame must be properly formatted with command, headers, and body.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The frame pointer will be freed automatically after sending </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Connection must be established before calling this function </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is asynchronous; use write callbacks to detect completion </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to active connection </p></li>
+<li><p><strong>frame</strong> – Pointer to frame to send (will be freed after sending) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv417cstomp_on_connectP12uv_connect_ti">
+<span id="_CPPv317cstomp_on_connectP12uv_connect_ti"></span><span id="_CPPv217cstomp_on_connectP12uv_connect_ti"></span><span id="cstomp_on_connect__uv_connect_tP.i"></span><span class="target" id="cstomp_8h_1ad081fdb946e4b00f80d03f6dba9c57bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_on_connect</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uv_connect_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">req</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">status</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv417cstomp_on_connectP12uv_connect_ti" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Callback for connection establishment. </p>
+<p>This function is called by libuv when the TCP connection to the STOMP server is established. It starts reading from the socket and sends the initial CONNECT frame with authentication credentials.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function automatically sends a CONNECT frame with stored credentials </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Error messages are printed to stderr on connection failures </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>req</strong> – The connection request that completed </p></li>
+<li><p><strong>status</strong> – Connection status (0 on success, negative on error)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv422cstomp_connection_freeP19cstomp_connection_t">
+<span id="_CPPv322cstomp_connection_freeP19cstomp_connection_t"></span><span id="_CPPv222cstomp_connection_freeP19cstomp_connection_t"></span><span id="cstomp_connection_free__cstomp_connection_tP"></span><span class="target" id="cstomp_8h_1aef8c4e754e13e5df9fee750fbc9ac67d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_connection_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv422cstomp_connection_freeP19cstomp_connection_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Free STOMP connection resources. </p>
+<p>Properly cleans up and frees all resources associated with a STOMP connection, including the event loop, socket handles, and connection structure itself.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is safe to call with NULL pointer </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Connection should be disconnected before calling this function </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>connection</strong> – Pointer to connection to free (can be NULL) </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK always</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv414cstomp_connectP19cstomp_connection_tPKcK8uint16_tPKcPKc">
+<span id="_CPPv314cstomp_connectP19cstomp_connection_tPKcK8uint16_tPKcPKc"></span><span id="_CPPv214cstomp_connectP19cstomp_connection_tPKcK8uint16_tPKcPKc"></span><span id="cstomp_connect__cstomp_connection_tP.cCP.uint16_tC.cCP.cCP"></span><span class="target" id="cstomp_8h_1a4028e134e5a1ec4f42367d998ca489ec"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_connect</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">destination_ip</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">destination_port</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">username</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">password</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414cstomp_connectP19cstomp_connection_tPKcK8uint16_tPKcPKc" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Connect to STOMP server. </p>
+<p>Establishes a TCP connection to the specified STOMP server and begins the STOMP protocol handshake. This function starts the event loop and will block until the connection is closed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both username and password must be provided together or both must be NULL </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function blocks until the connection is closed </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Connection callbacks will be triggered during execution </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to initialized connection structure </p></li>
+<li><p><strong>destination_ip</strong> – Server IP address or hostname </p></li>
+<li><p><strong>destination_port</strong> – Server port number </p></li>
+<li><p><strong>username</strong> – Authentication username (can be NULL for anonymous) </p></li>
+<li><p><strong>password</strong> – Authentication password (can be NULL for anonymous) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411cstomp_sendP19cstomp_connection_tPKcPKc6size_t">
+<span id="_CPPv311cstomp_sendP19cstomp_connection_tPKcPKc6size_t"></span><span id="_CPPv211cstomp_sendP19cstomp_connection_tPKcPKc6size_t"></span><span id="cstomp_send__cstomp_connection_tP.cCP.cCP.s"></span><span class="target" id="cstomp_8h_1acfc75cb764cd86215d376acc23363fbf"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_send</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">connection</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">destination</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">message</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">message_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411cstomp_sendP19cstomp_connection_tPKcPKc6size_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Send message to destination. </p>
+<p>Sends a message to the specified destination on the STOMP server. The message will be delivered to any subscribers of that destination.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Connection must be established before sending messages </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Message content can include binary data and null bytes </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Content-length header will be automatically added </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connection</strong> – Pointer to active connection </p></li>
+<li><p><strong>destination</strong> – Destination name (e.g., “/queue/test”, “/topic/news”) </p></li>
+<li><p><strong>message</strong> – Pointer to message content </p></li>
+<li><p><strong>message_size</strong> – Size of message content in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSTOMP_OK on success, error code on failure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv414cstomp_frame_t">
+<span id="_CPPv314cstomp_frame_t"></span><span id="_CPPv214cstomp_frame_t"></span><span id="cstomp_frame_t"></span><span class="target" id="structcstomp__frame__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_frame_t</span></span></span><a class="headerlink" href="#_CPPv414cstomp_frame_t" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;cstomp.h&gt;</em></div>
+<p>STOMP protocol frame structure. </p>
+<p>Represents a complete STOMP frame including command, headers, and body. The frame is stored as a contiguous buffer with proper STOMP formatting. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_frame_t6bufferE">
+<span id="_CPPv3N14cstomp_frame_t6bufferE"></span><span id="_CPPv2N14cstomp_frame_t6bufferE"></span><span id="cstomp_frame_t::buffer__cA"></span><span class="target" id="structcstomp__frame__t_1af299a54449c8eb9677b0e10e8320c442"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">buffer</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CSTOMP_FRAME_BUFFER_MAX_SIZE</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N14cstomp_frame_t6bufferE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Frame data buffer </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_frame_t10frame_sizeE">
+<span id="_CPPv3N14cstomp_frame_t10frame_sizeE"></span><span id="_CPPv2N14cstomp_frame_t10frame_sizeE"></span><span id="cstomp_frame_t::frame_size__s"></span><span class="target" id="structcstomp__frame__t_1a99fbbe5de15185356aa49da388a13df6"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_size</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_frame_t10frame_sizeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Current size of frame data </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv419cstomp_connection_t">
+<span id="_CPPv319cstomp_connection_t"></span><span id="_CPPv219cstomp_connection_t"></span><span id="cstomp_connection_t"></span><span class="target" id="structcstomp__connection__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_connection_t</span></span></span><a class="headerlink" href="#_CPPv419cstomp_connection_t" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;cstomp.h&gt;</em></div>
+<p>STOMP connection context. </p>
+<p>Contains all state and configuration needed for a STOMP connection, including network socket, authentication credentials, and callback handlers. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t6socketE">
+<span id="_CPPv3N19cstomp_connection_t6socketE"></span><span id="_CPPv2N19cstomp_connection_t6socketE"></span><span id="cstomp_connection_t::socket__uv_tcp_t"></span><span class="target" id="structcstomp__connection__t_1a94857058faa6bdfa26d0bf4f33cc9a9a"></span><span class="n"><span class="pre">uv_tcp_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">socket</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t6socketE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>TCP socket handle </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t4hostE">
+<span id="_CPPv3N19cstomp_connection_t4hostE"></span><span id="_CPPv2N19cstomp_connection_t4hostE"></span><span id="cstomp_connection_t::host__cA"></span><span class="target" id="structcstomp__connection__t_1a5258378b4075b95fbf9871e072feb2f8"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">host</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CSTOMP_HOST_MAX_LENGTH</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t4hostE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Server hostname or IP </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t7versionE">
+<span id="_CPPv3N19cstomp_connection_t7versionE"></span><span id="_CPPv2N19cstomp_connection_t7versionE"></span><span id="cstomp_connection_t::version__cA"></span><span class="target" id="structcstomp__connection__t_1aa957dbab0441bce68d97a6dd4d0ae751"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CSTOMP_CONNECTION_VERSION_MAX_LENGTH</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t7versionE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>STOMP protocol version </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t8usernameE">
+<span id="_CPPv3N19cstomp_connection_t8usernameE"></span><span id="_CPPv2N19cstomp_connection_t8usernameE"></span><span id="cstomp_connection_t::username__cA"></span><span class="target" id="structcstomp__connection__t_1ae36c6138a42cde601989af0544e3c8c1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">username</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CSTOMP_USERNAME_MAX_LENGTH</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t8usernameE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Authentication username </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t8passwordE">
+<span id="_CPPv3N19cstomp_connection_t8passwordE"></span><span id="_CPPv2N19cstomp_connection_t8passwordE"></span><span id="cstomp_connection_t::password__cA"></span><span class="target" id="structcstomp__connection__t_1a5e2092c1b4a4478a4eb4b602b22fbec0"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">password</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">CSTOMP_PASSWORD_MAX_LENGTH</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t8passwordE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Authentication password </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t4portE">
+<span id="_CPPv3N19cstomp_connection_t4portE"></span><span id="_CPPv2N19cstomp_connection_t4portE"></span><span id="cstomp_connection_t::port__uint16_t"></span><span class="target" id="structcstomp__connection__t_1a196242c062fc3b97a71a6b1f1ae6fda0"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">port</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t4portE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Server port number </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t11destinationE">
+<span id="_CPPv3N19cstomp_connection_t11destinationE"></span><span id="_CPPv2N19cstomp_connection_t11destinationE"></span><span id="cstomp_connection_t::destination__sockaddr_in"></span><span class="target" id="structcstomp__connection__t_1a4f968370b11f807e92ea3002b43ca93d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sockaddr_in</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destination</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t11destinationE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Server socket address </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t4loopE">
+<span id="_CPPv3N19cstomp_connection_t4loopE"></span><span id="_CPPv2N19cstomp_connection_t4loopE"></span><span id="cstomp_connection_t::loop__uv_loop_tP"></span><span class="target" id="structcstomp__connection__t_1abdd1c5778312692a0ee4d4641aab2744"></span><span class="n"><span class="pre">uv_loop_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">loop</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t4loopE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Event loop handle </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t7connectE">
+<span id="_CPPv3N19cstomp_connection_t7connectE"></span><span id="_CPPv2N19cstomp_connection_t7connectE"></span><span id="cstomp_connection_t::connect__uv_connect_tP"></span><span class="target" id="structcstomp__connection__t_1a319a4af5e8b0f4949d007a518607ce08"></span><span class="n"><span class="pre">uv_connect_t</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">connect</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t7connectE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Connection request handle </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t10on_connectE">
+<span id="_CPPv3N19cstomp_connection_t10on_connectE"></span><span id="_CPPv2N19cstomp_connection_t10on_connectE"></span><span class="target" id="structcstomp__connection__t_1a95e7757456bf8f582dde982579a72ee3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_connect</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t10on_connectE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Connection established callback </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t14on_connect_ctxE">
+<span id="_CPPv3N19cstomp_connection_t14on_connect_ctxE"></span><span id="_CPPv2N19cstomp_connection_t14on_connect_ctxE"></span><span id="cstomp_connection_t::on_connect_ctx__voidP"></span><span class="target" id="structcstomp__connection__t_1a42cb7db4c10b5899a0d0a3cd2d165044"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_connect_ctx</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t14on_connect_ctxE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Context for connection callback </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t7on_readE">
+<span id="_CPPv3N19cstomp_connection_t7on_readE"></span><span id="_CPPv2N19cstomp_connection_t7on_readE"></span><span class="target" id="structcstomp__connection__t_1ac1dbcc256812d8fbda692926a7ac6bc4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_read</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nread</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t7on_readE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Data received callback </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t11on_read_ctxE">
+<span id="_CPPv3N19cstomp_connection_t11on_read_ctxE"></span><span id="_CPPv2N19cstomp_connection_t11on_read_ctxE"></span><span id="cstomp_connection_t::on_read_ctx__voidP"></span><span class="target" id="structcstomp__connection__t_1ae703027234fb9908cd1eda28fd6e11a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_read_ctx</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t11on_read_ctxE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Context for read callback </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t8on_writeE">
+<span id="_CPPv3N19cstomp_connection_t8on_writeE"></span><span id="_CPPv2N19cstomp_connection_t8on_writeE"></span><span class="target" id="structcstomp__connection__t_1a784dd76d6edb20eaab4a68dc3da96370"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_write</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nwrote</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t8on_writeE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Data sent callback </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19cstomp_connection_t12on_write_ctxE">
+<span id="_CPPv3N19cstomp_connection_t12on_write_ctxE"></span><span id="_CPPv2N19cstomp_connection_t12on_write_ctxE"></span><span id="cstomp_connection_t::on_write_ctx__voidP"></span><span class="target" id="structcstomp__connection__t_1aa18a8604c2bc7510a421f9fc68b7b9c9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_write_ctx</span></span></span><a class="headerlink" href="#_CPPv4N19cstomp_connection_t12on_write_ctxE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Context for write callback </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv414cstomp_write_t">
+<span id="_CPPv314cstomp_write_t"></span><span id="_CPPv214cstomp_write_t"></span><span id="cstomp_write_t"></span><span class="target" id="structcstomp__write__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cstomp_write_t</span></span></span><a class="headerlink" href="#_CPPv414cstomp_write_t" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;cstomp.h&gt;</em></div>
+<p>Context passed to write completion callback. </p>
+<p>Contains references to the frame that was sent and the connection it was sent on, used by the write completion handler. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_write_t5frameE">
+<span id="_CPPv3N14cstomp_write_t5frameE"></span><span id="_CPPv2N14cstomp_write_t5frameE"></span><span id="cstomp_write_t::frame__cstomp_frame_tP"></span><span class="target" id="structcstomp__write__t_1a0630640e3fbb94b1abe8bcff94779c86"></span><a class="reference internal" href="#_CPPv414cstomp_frame_t" title="cstomp_frame_t"><span class="n"><span class="pre">cstomp_frame_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_write_t5frameE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Frame that was sent </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14cstomp_write_t10connectionE">
+<span id="_CPPv3N14cstomp_write_t10connectionE"></span><span id="_CPPv2N14cstomp_write_t10connectionE"></span><span id="cstomp_write_t::connection__cstomp_connection_tP"></span><span class="target" id="structcstomp__write__t_1a5c00a928d8c448da2936044f14debf23"></span><a class="reference internal" href="#_CPPv419cstomp_connection_t" title="cstomp_connection_t"><span class="n"><span class="pre">cstomp_connection_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">connection</span></span></span><a class="headerlink" href="#_CPPv4N14cstomp_write_t10connectionE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Connection frame was sent on </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">cstomp</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv414cstomp_error_t"><code class="docutils literal notranslate"><span class="pre">cstomp_error_t</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv427cstomp_set_connect_callbackP19cstomp_connection_tPvPFvPvE"><code class="docutils literal notranslate"><span class="pre">cstomp_set_connect_callback()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv424cstomp_set_read_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"><code class="docutils literal notranslate"><span class="pre">cstomp_set_read_callback()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv425cstomp_set_write_callbackP19cstomp_connection_tPvPFvPvPc6size_tE"><code class="docutils literal notranslate"><span class="pre">cstomp_set_write_callback()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv421cstomp_alloc_callbackP11uv_handle_t6size_tP8uv_buf_t"><code class="docutils literal notranslate"><span class="pre">cstomp_alloc_callback()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv415cstomp_get_bodyP14cstomp_frame_tPPcP6size_t"><code class="docutils literal notranslate"><span class="pre">cstomp_get_body()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv414cstomp_on_readP11uv_stream_t7ssize_tPK8uv_buf_t"><code class="docutils literal notranslate"><span class="pre">cstomp_on_read()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv415cstomp_on_writeP10uv_write_ti"><code class="docutils literal notranslate"><span class="pre">cstomp_on_write()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv417cstomp_connectionv"><code class="docutils literal notranslate"><span class="pre">cstomp_connection()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv418cstomp_add_commandP14cstomp_frame_tPKc"><code class="docutils literal notranslate"><span class="pre">cstomp_add_command()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv417cstomp_add_headerP14cstomp_frame_tPKcPKc"><code class="docutils literal notranslate"><span class="pre">cstomp_add_header()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv415cstomp_add_bodyP14cstomp_frame_tPKc6size_t"><code class="docutils literal notranslate"><span class="pre">cstomp_add_body()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv417cstomp_send_frameP19cstomp_connection_tP14cstomp_frame_t"><code class="docutils literal notranslate"><span class="pre">cstomp_send_frame()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv417cstomp_on_connectP12uv_connect_ti"><code class="docutils literal notranslate"><span class="pre">cstomp_on_connect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv422cstomp_connection_freeP19cstomp_connection_t"><code class="docutils literal notranslate"><span class="pre">cstomp_connection_free()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv414cstomp_connectP19cstomp_connection_tPKcK8uint16_tPKcPKc"><code class="docutils literal notranslate"><span class="pre">cstomp_connect()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv411cstomp_sendP19cstomp_connection_tPKcPKc6size_t"><code class="docutils literal notranslate"><span class="pre">cstomp_send()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv414cstomp_frame_t"><code class="docutils literal notranslate"><span class="pre">cstomp_frame_t</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv419cstomp_connection_t"><code class="docutils literal notranslate"><span class="pre">cstomp_connection_t</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#_CPPv414cstomp_write_t"><code class="docutils literal notranslate"><span class="pre">cstomp_write_t</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">cstomp documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Logan Kloft.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
